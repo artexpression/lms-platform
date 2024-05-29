@@ -48,7 +48,7 @@ const CreatePage = () =>{
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "hola",
+            title: "",
         },
     });
 
