@@ -4,57 +4,62 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//aqui abajo esta el generador de cliente, permite interactua con la base de datos
 generator client {
   provider = "prisma-client-js"
 }
 
+
+//fuente de datos, indica el tipo de base de datos,la url de la base de datos que se obtiene de una variable de entorno
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+//los modelos representan las tablas de la base de datos, cada modelo es una tabla de base de datos
 
 model Course{
-  id String @id @default(uuid())
-  userId String
+  id String @id @default(uuid()) //clave primaria
+  userId String //campo texto
   title String @db.Text
   description String? @db.Text
   imageUrl String? @db.Text
-  price Float?
-  isPublished Boolean @default(false)
+  //los tres arriba son campos de texto
+  price Float? //campo flotante
+  isPublished Boolean @default(false) // campo booleano 
 
-  categoryId String?
+  categoryId String? //campo de texto opcional que actua con clave foranea
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:598781171.
   category Category? @relation(fields: [categoryId], references: [id])
+// el de arriba es una relacion con el modelo category
 
-
-  attachments Attachment[]
+  attachments Attachment[] //relacion uno a muchos cone l modelo attachment
 
   createdAd DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userId, categoryId])
+//los dos de aqui arriba son campos con fecha y hora por defecto
+  @@index([userId, categoryId]) //indice compuesto en useId y categoryId
 }
 
 model Category {
-  id String @id @default(uuid())
-  name String
-  courses Course[]
+  id String @id @default(uuid()) //Clave primaria con un valor UUID por defecto.
+  name String // Campo de texto.
+  courses Course[]//elación uno a muchos con el modelo Course.
 }
 
 
 
 model Attachment {
-  id String @id @default(uuid())
-  url String
-  courseId String
+  id String @id @default(uuid())  //Clave primaria con un valor UUID por defecto.
+  url String  //Campo de texto.
+  courseId String  //Campo de texto que actúa como clave foránea.
 
 
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)  //Relación con el modelo Course, con eliminación en cascada.
   
-  createAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([courseId])
+  createAt DateTime @default(now())  //
+  updatedAt DateTime @updatedAt  // Campos de fecha y hora con valores por defecto.
+  @@index([courseId])  //Índice en courseId.
 
 
 }
