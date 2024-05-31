@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { LayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
+import { DescriptionForm } from "./_components/description-form";
 import { Titleform } from "./_components/title-form";
 
 const CourseIdPage = async ({
@@ -66,6 +67,9 @@ const CourseIdPage = async ({
                     </h2>
                   </div>
                   <Titleform
+                  initialData={course}
+                  courseId={course.id}/>
+                     <DescriptionForm
                   initialData={course}
                   courseId={course.id}/>
                  </div>

@@ -12,22 +12,23 @@ FormField,
 FormItem,
 FormMessage
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
 
 
 //importacion de de modulos y tecnologias
 
 
 
-interface TitleFormProps
+interface DescriptionForm
  {
     initialData: {
-        title: string;
+        description: string;
       
     };
     courseId: string;
@@ -39,8 +40,8 @@ interface TitleFormProps
 const formSchema = z.object ({
     //se utiliza la biblioteca zod para  definir un esquema de validacion
 
-    title: z.string().min(1,{
-        message: "Title is required"
+    description: z.string().min(1,{
+        message: "Description is required"
     })
 })
 /**
@@ -48,10 +49,10 @@ const formSchema = z.object ({
  */
 
 // define un componente funcional que recibe iniitial.. y course.. como props
-export const Titleform = ({
+export const DescriptionForm = ({
     initialData,
     courseId,
-}: TitleFormProps //sigue el modelo de la interfaz
+}: DescriptionForm //sigue el modelo de la interfaz
 ) =>{
    // aqui se crea un estado local llamado isEdi.. con la funcion de actualizacion setIsEdi..
    const [isEditing, setIsEditing] = useState(false); //maneja el estado de edicion con useState
@@ -85,7 +86,7 @@ const form = useForm<z.infer<typeof formSchema>>({
    return (
     <div className="mt-6 border bg-slate-100 roundedmd p-4">
         <div className="font-medium flex items-center justify-between">
-            Course title
+            Course desfription
                 <Button onClick={toggleEdit} variant="ghost">
                     {/**boton para alternar entre los modos de edicion y vista */}
                     {isEditing ? (
@@ -93,7 +94,7 @@ const form = useForm<z.infer<typeof formSchema>>({
                     ) : (
                             <>
                                   <Pencil  className="h-4 w-4 mr-2"/>
-                            Edit title</>
+                            Edit description</>
                       
                         )
                     }
@@ -102,8 +103,10 @@ const form = useForm<z.infer<typeof formSchema>>({
         </div>
         {/**muestra el titulo del cursor cuando no esta en modo edicion */}
         {!isEditing && (
-            <p className="text-sm mt-2">
-                {initialData.title}
+          
+            <p className={cn("text-sm mt-2",
+            !initialData.description && "text-slate-500 italic")}>
+                {initialData.description  || "no description"}
             </p>
         )}
       {/**Muestra el formulario cuando esta en modo de edicion */}
@@ -115,13 +118,13 @@ const form = useForm<z.infer<typeof formSchema>>({
 
                 <FormField 
                 control={form.control}
-                name="title"
+                name="description"
                 render= {({ field }) =>(
                     <FormItem>
                         <FormControl>
-                            <Input
+                            <Textarea
                             disabled={isSubmitting}
-                            placeholder="e.g. 'Advanced web development"
+                            placeholder="e.g. 'This course is about..."
                             {...field}/>
                         </FormControl>
                         <FormMessage/>
