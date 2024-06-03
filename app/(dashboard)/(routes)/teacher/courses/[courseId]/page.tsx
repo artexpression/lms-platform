@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { DescriptionForm } from "./_components/description-form";
 import { Titleform } from "./_components/title-form";
 import { ImageForm } from "./_components/image-form";
+import { CategoryForm } from "./_components/category-form";
 
 const CourseIdPage = async ({
     params
@@ -22,6 +23,12 @@ const CourseIdPage = async ({
           id: params.courseId,
        
         }
+      });
+// el codigo aqui abajo es del capitulo  course cateogry
+      const categories = await db.category.findMany({
+        orderBy: {
+          name: "asc",
+        },
       });
 
       if(!course){
@@ -76,6 +83,14 @@ const CourseIdPage = async ({
                    <ImageForm
                   initialData={course}
                   courseId={course.id}/>
+                <CategoryForm
+                  initialData={course}
+                  courseId={course.id}
+                  options={categories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                  })) || []}  // Añade un valor por defecto vacío
+                />
                  </div>
          </div>
         </div>

@@ -36,6 +36,8 @@ export async function POST(
                 }
             });
 
+            
+
             //retorna la respuesta en formato json con los datos del nuevo curso creado
           return NextResponse.json(course);
 

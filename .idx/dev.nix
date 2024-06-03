@@ -9,13 +9,22 @@
     pkgs.yarn
     pkgs.nodePackages.pnpm
     pkgs.bun
+    pkgs.openssl_legacy
+    
+    
+
+  
   ];
+
+    # Configuración para permitir paquetes inseguros
+  
   # Sets environment variables in the workspace
   env = {};
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
       # "vscodevim.vim"
+      "Prisma.prisma"
     ];
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
